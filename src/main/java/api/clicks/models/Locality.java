@@ -23,6 +23,10 @@ public class Locality {
     @OneToMany(mappedBy = "locality")
     private Set<Player> players = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn()
+    private Province province;
+
     public Locality() {
     }
 
@@ -35,5 +39,12 @@ public class Locality {
         this.name = name;
         this.clicks = clicks;
         this.players = players;
+    }
+
+    public Locality(String name,int clicks, Province province) {
+        this.name = name;
+        this.clicks = clicks;
+        this.players = players;
+        this.province = province;
     }
 }
