@@ -32,7 +32,7 @@ public class LocalityController {
         if (locality == null){
             return  ResponseEntity.notFound().build(); //404
         }else{
-            return ResponseEntity.ok(locality);
+            return ResponseEntity.ok(new Object[]{locality, locality.getPlayers()} );
         }
     }
 

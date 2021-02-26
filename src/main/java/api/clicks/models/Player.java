@@ -24,6 +24,11 @@ public class Player {
     @ManyToMany
     private Set<Team> teams = new HashSet<>();
 
+    //M:1 -> Locality
+    @ManyToOne
+    @JoinColumn()
+    private Locality locality;
+
     public Player(){
 
     }
@@ -41,5 +46,14 @@ public class Player {
         this.avatar = avatar;
         this.clicks = clicks;
         this.teams = teams;
+    }
+
+    public Player(String name, String passwd, String avatar, int clicks, Set<Team> teams, Locality locality) {
+        this.name = name;
+        this.passwd = passwd;
+        this.avatar = avatar;
+        this.clicks = clicks;
+        this.teams = teams;
+        this.locality = locality;
     }
 }

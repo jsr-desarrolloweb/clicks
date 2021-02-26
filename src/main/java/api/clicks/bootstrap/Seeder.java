@@ -35,13 +35,19 @@ public class Seeder implements CommandLineRunner {
         arrayTeams.add(t1);
         arrayTeams.add(t2);
 
-        Player p1 = new Player("jaime", "pestillo", null, 10, arrayTeams);
-        Player p2 = new Player("cristina", "pestillo", null, 8);
+        Locality l1 = new Locality("Cadiz", 0 );
+        Locality l2 = new Locality("Malaga", 2);
+        localityRepository.save(l1);
+        localityRepository.save(l2);
+
+        Player p1 = new Player("jaime", "pestillo", null, 10, arrayTeams, l1);
+        Player p2 = new Player("cristina", "pestillo", null, 8, null, l2);
         playerRepository.save(p1);
         playerRepository.save(p2);
 
-        Locality l1 = new Locality("Cadiz", 0);
-        localityRepository.save(l1);
+
+
+
 
 
 
