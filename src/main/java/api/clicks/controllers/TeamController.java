@@ -35,7 +35,7 @@ public class TeamController {
         if (team == null){
             return  ResponseEntity.notFound().build(); //404
         }else{
-            return ResponseEntity.ok(team);
+            return ResponseEntity.ok(new Object[]{team, team.getPlayers()}  );
         }
     }
 
