@@ -1,7 +1,9 @@
 package api.clicks.bootstrap;
 
+import api.clicks.models.Locality;
 import api.clicks.models.Player;
 import api.clicks.models.Team;
+import api.clicks.repositories.LocalityRepository;
 import api.clicks.repositories.PlayerRepository;
 import api.clicks.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class Seeder implements CommandLineRunner {
     private PlayerRepository playerRepository;
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private LocalityRepository localityRepository;
 
     @Override
     public void run(String[] args) {
@@ -26,6 +30,7 @@ public class Seeder implements CommandLineRunner {
         teamRepository.save(t1);
         teamRepository.save(t2);
 
+        //Set de equipos para los jugadores
         Set<Team> arrayTeams = new HashSet<>();
         arrayTeams.add(t1);
         arrayTeams.add(t2);
@@ -35,7 +40,8 @@ public class Seeder implements CommandLineRunner {
         playerRepository.save(p1);
         playerRepository.save(p2);
 
-
+        Locality l1 = new Locality("Cadiz", 0);
+        localityRepository.save(l1);
 
 
 
