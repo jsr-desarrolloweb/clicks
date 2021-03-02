@@ -3,13 +3,23 @@ package api.clicks.controllers;
 
 import api.clicks.models.Player;
 import api.clicks.repositories.PlayerRepository;
+import api.clicks.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +28,8 @@ import java.util.Optional;
 public class PlayerController {
     @Autowired
     private PlayerRepository playerRepository;
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping(value="/players")
     public ResponseEntity<?> getAllPlayers(){
@@ -72,6 +84,40 @@ public class PlayerController {
         playerRepository.deleteById(id);
         return new ResponseEntity<>("Player  Deleted, id: " + id, HttpStatus.OK);
     }
+
+
+    @PostMapping(value = "player/avatar")
+    public ResponseEntity<Object> setPlayerAvatar(@RequestParam("id") Long id, @RequestParam("file") MultipartFile file){
+        playerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        try {
+            // TODO: añadir al metodo imageStore "Player" o "Team"
+            imageService.imageStore(file, id);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Cannot set player avatar", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>("Player with id " +id+ " Avatar updated", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "player/{id}/avatar")
+    public ResponseEntity<Resource> getPlayerAvatar(@PathVariable("id") Long id){
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        try {
+            Path targetPath = Paths.get("./"+player.getAvatar()).normalize();
+            Resource resource = new UrlResource(targetPath.toUri());
+            if (resource.exists()) {
+                String contentType = Files.probeContentType(targetPath);
+                return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)).body(resource);
+            }else{
+                throw new EntityNotFoundException(id.toString());
+            }
+        } catch (IOException e) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+
 
 
 

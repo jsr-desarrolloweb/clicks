@@ -23,7 +23,6 @@ public class ImageController {
 
     @PostMapping(value = "/image")
     public ResponseEntity<Object> imageTest(@RequestParam("id") String id,
-                                            @RequestParam("name") String name,
                                             @RequestParam("file") MultipartFile file){
 
         try{
@@ -42,6 +41,8 @@ public class ImageController {
                 .normalize();
         try {
             Resource resource = new UrlResource(targetPath.toUri());
+            System.out.println(targetPath);
+            System.out.println(resource);
             if (resource.exists()){
                 String contentType = Files.probeContentType(targetPath);
                 return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)).body(resource);

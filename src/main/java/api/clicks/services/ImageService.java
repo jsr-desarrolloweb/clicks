@@ -23,14 +23,14 @@ public class ImageService {
 
 
     public boolean imageStore(MultipartFile file, Long id) throws IOException {
-        String myFileName = id.toString()+" - "+file.getOriginalFilename();
+        String myFileName = id.toString()+"-"+file.getOriginalFilename();
         Path targetPath = Paths.get("./images/"
                 +myFileName)
                 .normalize();
         Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
         Player player = playerRepository.findById(id)
                                         .orElseThrow(()-> new EntityNotFoundException(id.toString()));
-        player.setAvatar("/download/"+myFileName);
+        player.setAvatar("/images/"+myFileName);
         playerRepository.save(player);
         return true;
     }
