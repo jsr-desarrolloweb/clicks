@@ -29,7 +29,7 @@ public class TeamController {
         }
     }
 
-    @GetMapping(value = "team/{id}")
+    @GetMapping(value = "/team/{id}")
     public ResponseEntity<?> getTeamDetail(@PathVariable Long id){
         Team team = teamRepository.findById(id).orElse(null);
         if (team == null){

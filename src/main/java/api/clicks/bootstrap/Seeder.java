@@ -1,13 +1,7 @@
 package api.clicks.bootstrap;
 
-import api.clicks.models.Locality;
-import api.clicks.models.Player;
-import api.clicks.models.Province;
-import api.clicks.models.Team;
-import api.clicks.repositories.LocalityRepository;
-import api.clicks.repositories.PlayerRepository;
-import api.clicks.repositories.ProvinceRepository;
-import api.clicks.repositories.TeamRepository;
+import api.clicks.models.*;
+import api.clicks.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -26,6 +20,8 @@ public class Seeder implements CommandLineRunner {
     private LocalityRepository localityRepository;
     @Autowired
     private ProvinceRepository provinceRepository;
+    @Autowired
+    private CountryRepository countryRepository;
 
     @Override
     public void run(String[] args) {
@@ -70,22 +66,10 @@ public class Seeder implements CommandLineRunner {
         Set<Team> equiposJugador = new HashSet<>();
         equiposJugador.add(losLocos);
 
-
         Player jaime = new Player("Jaime", "pestillo", null, 0, equiposJugador, medina);
         playerRepository.save(jaime);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        Country espania = new Country("España", 0);
+        countryRepository.save(espania);
     }
 }

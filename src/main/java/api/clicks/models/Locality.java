@@ -41,7 +41,7 @@ public class Locality {
         this.players = players;
     }
 
-    public Locality(String name,int clicks, Province province) {
+    public Locality(String name, int clicks, Province province) {
         this.name = name;
         this.clicks = clicks;
         this.players = players;
