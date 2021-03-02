@@ -55,7 +55,12 @@ public class Seeder implements CommandLineRunner {
         Player p2 = new Player("cristina", "pestillo", null, 8, null, l2);
         playerRepository.save(p1);
         playerRepository.save(p2);*/
-        Province cadiz = new Province("Cadiz", 0);
+
+
+        Country espania = new Country("España", 0);
+        countryRepository.save(espania);
+
+        Province cadiz = new Province("Cadiz", 0, espania);
         provinceRepository.save(cadiz);
 
         Locality medina = new Locality("Medina", 0, cadiz);
@@ -69,7 +74,6 @@ public class Seeder implements CommandLineRunner {
         Player jaime = new Player("Jaime", "pestillo", null, 0, equiposJugador, medina);
         playerRepository.save(jaime);
 
-        Country espania = new Country("España", 0);
-        countryRepository.save(espania);
+
     }
 }

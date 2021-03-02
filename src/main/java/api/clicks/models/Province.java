@@ -23,6 +23,10 @@ public class Province {
     @OneToMany(mappedBy = "province")
     private Set<Locality> localities = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn()
+    private Country country;
+
     public Province() {
     }
 
@@ -31,9 +35,9 @@ public class Province {
         this.clicks = clicks;
     }
 
-    public Province(String name, int clicks, Set<Locality> localities) {
+    public Province(String name, int clicks, Country country) {
         this.name = name;
         this.clicks = clicks;
-        this.localities = localities;
+        this.country = country;
     }
 }

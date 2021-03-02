@@ -35,7 +35,7 @@ public class CountryController {
         if (country == null){
             return  ResponseEntity.notFound().build(); //404
         }else{
-            return ResponseEntity.ok(country);
+            return ResponseEntity.ok(new Object[]{country, country.getProvinces()} );
         }
     }
 

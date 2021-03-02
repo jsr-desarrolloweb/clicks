@@ -1,11 +1,12 @@
 package api.clicks.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -16,6 +17,11 @@ public class Country {
     private String name;
     private int clicks;
 
+    @EqualsAndHashCode.Exclude
+    @JsonBackReference
+    @OneToMany(mappedBy = "country")
+    private Set<Province> provinces = new HashSet<>();
+
     public Country() {
     }
 
@@ -23,4 +29,6 @@ public class Country {
         this.name = name;
         this.clicks = clicks;
     }
+
+
 }
