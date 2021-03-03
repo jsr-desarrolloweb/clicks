@@ -92,7 +92,7 @@ public class PlayerController {
                 .orElseThrow(() -> new EntityNotFoundException(id.toString()));
         try {
             // TODO: añadir al metodo imageStore "Player" o "Team"
-            imageService.imageStore(file, id);
+            imageService.imageStore(file, id, "player");
         } catch (Exception e) {
             return new ResponseEntity<>("Cannot set player avatar", HttpStatus.INTERNAL_SERVER_ERROR);
         }

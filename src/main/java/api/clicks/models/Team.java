@@ -18,6 +18,7 @@ public class Team {
     private Long id;
     private String name;
     private int clicks;
+    private String avatar;
 
     //N:M -> player
     @JsonBackReference
@@ -38,6 +39,13 @@ public class Team {
     public Team(String name, int clicks, Set<Player> players) {
         this.name = name;
         this.clicks = clicks;
+        this.players = players;
+    }
+
+    public Team(String name, int clicks, String avatar, Set<Player> players) {
+        this.name = name;
+        this.clicks = clicks;
+        this.avatar = avatar;
         this.players = players;
     }
 }

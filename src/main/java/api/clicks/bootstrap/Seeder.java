@@ -35,7 +35,7 @@ public class Seeder implements CommandLineRunner {
         Locality medina = new Locality("Medina", 0, cadiz);
         localityRepository.save(medina);
 
-        Team losLocos = new Team("Los Locos", 0);
+        Team losLocos = new Team("Los Locos", 0, null, null);
         teamRepository.save(losLocos);
         Set<Team> equiposJugador = new HashSet<>();
         equiposJugador.add(losLocos);
