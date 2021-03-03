@@ -1,7 +1,7 @@
 package api.clicks.controllers;
 
 
-import api.clicks.models.Player;
+import api.clicks.models.*;
 import api.clicks.repositories.PlayerRepository;
 import api.clicks.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,6 +118,37 @@ public class PlayerController {
         }
     }
 
+
+    @PutMapping(value = "player/{id}/clicks")
+    public ResponseEntity<Object> UpdatePlayerClicks(@PathVariable("id") Long id) throws IOException{
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        player.setClicks(player.getClicks() + 1);
+
+        // TODO: refactor
+        //Si el jugador pertenece a algun equipo
+        if (!player.getTeams().isEmpty()){
+            for (Team team:
+                 player.getTeams()) {
+                    team.setClicks(team.getClicks()+1);
+            }
+
+            Locality playerLocality = player.getLocality();
+            playerLocality.setClicks(playerLocality.getClicks() + 1);
+
+            Province playerProvince = playerLocality.getProvince();
+            playerProvince.setClicks(playerProvince.getClicks() + 1);
+
+            Country playercountry = playerProvince.getCountry();
+            playercountry.setClicks(playercountry.getClicks() + 1);
+
+            playerRepository.save(player);
+            return new ResponseEntity<>(id+" - "+player.getClicks(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("The player does not belong to a team", HttpStatus.CONFLICT);
+        
+    }
 
 
 
