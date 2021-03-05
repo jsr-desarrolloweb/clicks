@@ -4,33 +4,36 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 @Data
-public class Country {
+@Entity
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String name;
-    private int clicks;
+    Long id;
+    String name;
 
+    @JsonBackReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonBackReference
-    @OneToMany(mappedBy = "country")
-    private Set<Province> provinces = new HashSet<>();
+    @OneToMany(mappedBy = "role")
+    Set<Player> players = new HashSet<>();
 
-    public Country() {
+    public Role() {
     }
 
-    public Country(String name, int clicks) {
+    public Role(String name) {
         this.name = name;
-        this.clicks = clicks;
     }
 
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 
 }

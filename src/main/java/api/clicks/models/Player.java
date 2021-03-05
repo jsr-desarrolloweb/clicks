@@ -3,6 +3,9 @@ package api.clicks.models;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import javax.persistence.*;
@@ -25,12 +28,20 @@ public class Player {
 
     //M:N -> Team
     @ManyToMany
+    @ToString.Exclude
     private Set<Team> teams = new HashSet<>();
 
     //M:1 -> Locality
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn()
     private Locality locality;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn()
+    private Role role;
 
     public Player(){
 
@@ -51,9 +62,10 @@ public class Player {
         this.teams = teams;
     }
 
-    public Player(String name, String passwd, String avatar, int clicks, String token, Set<Team> teams, Locality locality) {
+    public Player(String name, String passwd,Role role, String avatar, int clicks, String token, Set<Team> teams, Locality locality) {
         this.name = name;
-        this.passwd = passwd;
+        this.passwd = new BCryptPasswordEncoder().encode(passwd);
+        this.role = role;
         this.avatar = avatar;
         this.clicks = clicks;
         this.token = token;

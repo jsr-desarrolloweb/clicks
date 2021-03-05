@@ -22,9 +22,16 @@ public class Seeder implements CommandLineRunner {
     private ProvinceRepository provinceRepository;
     @Autowired
     private CountryRepository countryRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public void run(String[] args) {
+
+        Role admin = new Role("ROLE_ADMIN");
+        Role guest = new Role("ROLE_GUEST");
+        roleRepository.save(admin);
+        roleRepository.save(guest);
 
         Country espania = new Country("España", 0);
         countryRepository.save(espania);
@@ -40,8 +47,10 @@ public class Seeder implements CommandLineRunner {
         Set<Team> equiposJugador = new HashSet<>();
         equiposJugador.add(losLocos);
 
-        Player jaime = new Player("jaime", "pestillo", null, 0,null, equiposJugador, medina);
+        Player jaime = new Player("jaime", "pestillo", admin, null, 0,null, equiposJugador, medina);
+        Player cristina = new Player("cristina", "pestillo", admin, null, 0,null, equiposJugador, medina);
         playerRepository.save(jaime);
+        playerRepository.save(cristina);
 
 
     }

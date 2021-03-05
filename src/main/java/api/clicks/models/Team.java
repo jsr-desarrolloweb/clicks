@@ -4,6 +4,7 @@ package api.clicks.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Team {
     private String avatar;
 
     //N:M -> player
+    @ToString.Exclude
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "teams", cascade = CascadeType.ALL)

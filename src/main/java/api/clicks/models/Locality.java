@@ -3,6 +3,7 @@ package api.clicks.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,11 +20,13 @@ public class Locality {
 
     //1:M -> players
     @JsonBackReference
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "locality")
     private Set<Player> players = new HashSet<>();
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn()
     private Province province;
 

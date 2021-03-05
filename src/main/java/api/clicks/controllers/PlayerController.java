@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,13 +43,15 @@ public class PlayerController {
     public ResponseEntity<Object> login(@RequestParam("name") String name,
                                         @RequestParam("password") String password){
 
-
         String token = null;
-
         //compruebo name y passwdo
+        // TODO: implementar findbynameandpasswd
+
         Player player = playerRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException(name));
-        
+        if(!new BCryptPasswordEncoder().matches(password, player.getPasswd()))
+            return new ResponseEntity<>("Incorrect password", HttpStatus.FORBIDDEN);
+            //throw new EntityNotFoundException();
 
         if(player.getToken() != null) {
             try {
@@ -59,19 +62,16 @@ public class PlayerController {
             }
         }
          //Generate token
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList("ROLE_USER");
-
+        //List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+          //      .commaSeparatedStringToAuthorityList("ROLE_USER");
         String secretKey = "pestillo";
-        // TODO: Investigar todos los parámetros
+
         token = Jwts
                 .builder()
                 .setId("AlbertIES")
                 .setSubject(name)
                 .claim("authorities",
-                        grantedAuthorities.stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList()))
+                        player.getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 6000000))
                 .signWith(SignatureAlgorithm.HS512,
@@ -80,6 +80,14 @@ public class PlayerController {
         playerRepository.save(player);
         return new ResponseEntity<>(token, HttpStatus.OK);
 
+    }
+
+    @GetMapping(value = "/logout")
+    public ResponseEntity<Object> logout() {
+        Player player = (Player) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        player.setToken(null);
+        playerRepository.save(player);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
 
