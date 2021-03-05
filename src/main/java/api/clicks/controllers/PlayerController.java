@@ -4,25 +4,30 @@ package api.clicks.controllers;
 import api.clicks.models.*;
 import api.clicks.repositories.PlayerRepository;
 import api.clicks.services.ImageService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -31,6 +36,53 @@ public class PlayerController {
     private PlayerRepository playerRepository;
     @Autowired
     private ImageService imageService;
+
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestParam("name") String name,
+                                        @RequestParam("password") String password){
+
+
+        String token = null;
+
+        //compruebo name y passwdo
+        Player player = playerRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException(name));
+        
+
+        if(player.getToken() != null) {
+            try {
+                Jwts.parser().parse(player.getToken()).getBody();
+                return new ResponseEntity<>("", HttpStatus.CONFLICT);
+            } catch (Exception e) {
+                player.setToken(null);
+            }
+        }
+         //Generate token
+        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+                .commaSeparatedStringToAuthorityList("ROLE_USER");
+
+        String secretKey = "pestillo";
+        // TODO: Investigar todos los parámetros
+        token = Jwts
+                .builder()
+                .setId("AlbertIES")
+                .setSubject(name)
+                .claim("authorities",
+                        grantedAuthorities.stream()
+                                .map(GrantedAuthority::getAuthority)
+                                .collect(Collectors.toList()))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 6000000))
+                .signWith(SignatureAlgorithm.HS512,
+                        secretKey.getBytes()).compact();
+        player.setToken(token);
+        playerRepository.save(player);
+        return new ResponseEntity<>(token, HttpStatus.OK);
+
+    }
+
+
 
     @GetMapping(value="/players")
     public ResponseEntity<?> getAllPlayers(){
@@ -92,7 +144,6 @@ public class PlayerController {
         playerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id.toString()));
         try {
-            // TODO: añadir al metodo imageStore "Player" o "Team"
             imageService.imageStore(file, id, "player");
         } catch (Exception e) {
             return new ResponseEntity<>("Cannot set player avatar", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -125,7 +176,7 @@ public class PlayerController {
                 .orElseThrow(() -> new EntityNotFoundException(id.toString()));
         player.setClicks(player.getClicks() + 1);
 
-        // TODO: refactor
+        // TODO: refactor a un método del jugador
         //Si el jugador pertenece a algun equipo
         if (!player.getTeams().isEmpty()){
             for (Team team:
@@ -147,7 +198,7 @@ public class PlayerController {
         }
 
         return new ResponseEntity<>("The player does not belong to a team", HttpStatus.CONFLICT);
-        
+
     }
 
 

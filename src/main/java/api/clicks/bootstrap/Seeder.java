@@ -40,7 +40,7 @@ public class Seeder implements CommandLineRunner {
         Set<Team> equiposJugador = new HashSet<>();
         equiposJugador.add(losLocos);
 
-        Player jaime = new Player("Jaime", "pestillo", null, 0, equiposJugador, medina);
+        Player jaime = new Player("jaime", "pestillo", null, 0,null, equiposJugador, medina);
         playerRepository.save(jaime);
 
 

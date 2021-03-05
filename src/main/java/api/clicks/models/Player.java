@@ -20,6 +20,9 @@ public class Player {
     private String avatar;
     private int clicks;
 
+    @Column(length = 300)
+    private String token;
+
     //M:N -> Team
     @ManyToMany
     private Set<Team> teams = new HashSet<>();
@@ -48,11 +51,12 @@ public class Player {
         this.teams = teams;
     }
 
-    public Player(String name, String passwd, String avatar, int clicks, Set<Team> teams, Locality locality) {
+    public Player(String name, String passwd, String avatar, int clicks, String token, Set<Team> teams, Locality locality) {
         this.name = name;
         this.passwd = passwd;
         this.avatar = avatar;
         this.clicks = clicks;
+        this.token = token;
         this.teams = teams;
         this.locality = locality;
     }
