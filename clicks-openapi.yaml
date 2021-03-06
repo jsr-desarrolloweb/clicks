@@ -1,0 +1,495 @@
+openapi: "3.0.3"
+info:
+  title: "clicks API"
+  description: "clicks API"
+  version: "1.0.0"
+servers:
+  - url: "https://clicks"
+paths:
+  /countries:
+    get:
+      summary: "GET countries"
+      operationId: "getAllCountries"
+      responses:
+        200:
+          description: "OK"
+      tags:
+        - Country
+  /countries/rating:
+    get:
+      summary: "GET countries/rating"
+      operationId: "getCountriesRating"
+      responses:
+        200:
+          description: "OK"
+      tags:
+        - Country
+  /country:
+    post:
+      summary: "POST country"
+      operationId: "addCountry"
+      tags:
+        - Country
+      responses:
+        200:
+          description: "OK"
+  /country/{id}:
+    get:
+      summary: "GET country/{id}"
+      operationId: "getCountryDetail"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      tags:
+        - Country
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "PUT country/{id}"
+      operationId: "countryUpdate"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      tags:
+        - Country
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "DELETE country/{id}"
+      operationId: "countryDelete"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+      tags:
+        - Country
+  /greetting:
+    get:
+      summary: "GET greetting"
+      operationId: "greeting"
+      responses:
+        200:
+          description: "OK"
+  /localities:
+    get:
+      summary: "GET localities"
+      operationId: "getAllLocalities"
+      responses:
+        200:
+          description: "OK"
+      tags:
+        - Locality
+  /localities/rating:
+    get:
+      summary: "GET localities/rating"
+      operationId: "getLocalitiesRating"
+      tags:
+        - Locality
+      responses:
+        200:
+          description: "OK"
+  /locality:
+    post:
+      summary: "POST locality"
+      operationId: "addLocality"
+      tags:
+        - Locality
+      responses:
+        200:
+          description: "OK"
+  /locality/{id}:
+    get:
+      summary: "GET locality/{id}"
+      operationId: "getLocalityDetail"
+      tags:
+        - Locality
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "PUT locality/{id}"
+      operationId: "localityUpdate"
+      tags:
+        - Locality
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "DELETE locality/{id}"
+      operationId: "localityDelete"
+      tags:
+        - Locality
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+  /login:
+    post:
+      summary: "POST login"
+      operationId: "login"
+      tags:
+        - User
+      parameters:
+        - name: "name"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "password"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: "OK"
+  /logout:
+    get:
+      summary: "GET logout"
+      operationId: "logout"
+      tags:
+        - User
+      responses:
+        200:
+          description: "OK"
+  /player:
+    post:
+      summary: "POST player"
+      operationId: "addPlayer"
+      tags:
+        - Player
+      responses:
+        200:
+          description: "OK"
+  /player/avatar:
+    post:
+      summary: "POST player/avatar"
+      operationId: "setPlayerAvatar"
+      tags:
+        - Player
+      parameters:
+        - name: "id"
+          in: "query"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+        - name: "file"
+          in: "query"
+          required: true
+      responses:
+        200:
+          description: "OK"
+  /player/{id}:
+    get:
+      summary: "GET player/{id}"
+      operationId: "getPlayerDetail"
+      tags:
+        - Player
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "PUT player/{id}"
+      operationId: "playerUpdate"
+      tags:
+        - Player
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "DELETE player/{id}"
+      operationId: "playerDelete"
+      tags:
+        - Player
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+  /player/{id}/avatar:
+    get:
+      summary: "GET player/{id}/avatar"
+      operationId: "getPlayerAvatar"
+      tags:
+        - Player
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+  /player/{id}/clicks:
+    put:
+      summary: "PUT player/{id}/clicks"
+      operationId: "UpdatePlayerClicks"
+      tags:
+        - Player
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+  /players:
+    get:
+      summary: "GET players"
+      operationId: "getAllPlayers"
+      tags:
+        - Player
+      responses:
+        200:
+          description: "OK"
+  /players/rating:
+    get:
+      summary: "GET players/rating"
+      operationId: "getPlayersRating"
+      tags:
+        - Player
+      responses:
+        200:
+          description: "OK"
+  /province:
+    post:
+      summary: "POST province"
+      operationId: "addProvince"
+      tags:
+        - Province
+      responses:
+        200:
+          description: "OK"
+  /province/{id}:
+    get:
+      summary: "GET province/{id}"
+      operationId: "getProvinceDetail"
+      tags:
+        - Province
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "PUT province/{id}"
+      operationId: "provinceUpdate"
+      tags:
+        - Province
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "DELETE province/{id}"
+      operationId: "provinceDelete"
+      tags:
+        - Province
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+  /provinces:
+    get:
+      summary: "GET provinces"
+      operationId: "getAllProvinces"
+      tags:
+        - Province
+      responses:
+        200:
+          description: "OK"
+  /provinces/rating:
+    get:
+      summary: "GET provinces/rating"
+      operationId: "getProvincesRating"
+      tags:
+        - Province
+      responses:
+        200:
+          description: "OK"
+  /team:
+    post:
+      summary: "POST team"
+      operationId: "addTeam"
+      tags:
+        - Team
+      responses:
+        200:
+          description: "OK"
+  /team/avatar:
+    post:
+      summary: "POST team/avatar"
+      operationId: "setTeamAvatar"
+      tags:
+        - Team
+      parameters:
+        - name: "id"
+          in: "query"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+        - name: "file"
+          in: "query"
+          required: true
+      responses:
+        200:
+          description: "OK"
+  /team/{id}:
+    get:
+      summary: "GET team/{id}"
+      operationId: "getTeamDetail"
+      tags:
+        - Team
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "PUT team/{id}"
+      operationId: "teamUpdate"
+      tags:
+        - Team
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "DELETE team/{id}"
+      operationId: "teamDelete"
+      tags:
+        - Team
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+  /team/{id}/avatar:
+    get:
+      summary: "GET team/{id}/avatar"
+      operationId: "getTeamAvatar"
+      tags:
+        - Team
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "number"
+            format: "int64"
+      responses:
+        200:
+          description: "OK"
+  /teams:
+    get:
+      summary: "GET teams"
+      operationId: "getAllTeams"
+      tags:
+        - Team
+      responses:
+        200:
+          description: "OK"
+  /teams/rating:
+    get:
+      summary: "GET teams/rating"
+      operationId: "getTeamsRating"
+      tags:
+        - Team
+      responses:
+        200:
+          description: "OK"
