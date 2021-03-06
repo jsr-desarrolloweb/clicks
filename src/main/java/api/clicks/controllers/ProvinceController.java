@@ -4,6 +4,7 @@ package api.clicks.controllers;
 
 import api.clicks.models.Player;
 import api.clicks.models.Province;
+import api.clicks.models.Team;
 import api.clicks.repositories.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -71,6 +72,12 @@ public class ProvinceController {
         }
         provinceRepository.deleteById(id);
         return new ResponseEntity<>("Province  Deleted, id: " + id, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/provinces/rating")
+    public ResponseEntity<Object> getProvincesRating() {
+        List<Province> result = provinceRepository.findAllByOrderByClicksDesc();
+        return ResponseEntity.ok(result);
     }
 
 

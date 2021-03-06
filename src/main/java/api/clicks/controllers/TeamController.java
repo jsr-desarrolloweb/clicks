@@ -1,5 +1,6 @@
 package api.clicks.controllers;
 
+import api.clicks.models.Player;
 import api.clicks.models.Team;
 
 import api.clicks.repositories.TeamRepository;
@@ -112,4 +113,10 @@ public class TeamController {
     }
 
 
+
+    @GetMapping(value = "/teams/rating")
+    public ResponseEntity<Object> getTeamsRating() {
+        List<Team> result = teamRepository.findAllByOrderByClicksDesc();
+        return ResponseEntity.ok(result);
+    }
 }

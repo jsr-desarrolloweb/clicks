@@ -70,6 +70,12 @@ public class CountryController {
         return new ResponseEntity<>("Country  Deleted, id: " + id, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/countries/rating")
+    public ResponseEntity<Object> getCountriesRating() {
+        List<Country> result = countryRepository.findAllByOrderByClicksDesc();
+        return ResponseEntity.ok(result);
+    }
+
 
 
 }

@@ -32,7 +32,13 @@ public class ClicksApplication {
                     .antMatchers("/players/**").hasAnyRole("ADMIN", "GUEST")
                     .antMatchers("/player/**").hasRole("ADMIN")
                     .antMatchers("/teams/**").hasAnyRole("ADMIN", "GUEST")
-                    .antMatchers("/team/**").hasAnyRole("ADMIN", "GUEST")
+                    .antMatchers("/team/**").hasRole("ADMIN")
+                    .antMatchers("/localities/**").hasAnyRole("ADMIN", "GUEST")
+                    .antMatchers("/locality/**").hasRole("ADMIN")
+                    .antMatchers("/provinces/**").hasAnyRole("ADMIN", "GUEST")
+                    .antMatchers("/province/**").hasRole("ADMIN")
+                    .antMatchers("/countries/**").hasAnyRole("ADMIN", "GUEST")
+                    .antMatchers("/country/**").hasRole("ADMIN")
                     .antMatchers("/").permitAll();
         }
 

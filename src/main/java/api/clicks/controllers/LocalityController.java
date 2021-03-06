@@ -1,6 +1,8 @@
 package api.clicks.controllers;
 
 import api.clicks.models.Locality;
+import api.clicks.models.Player;
+import api.clicks.models.Team;
 import api.clicks.repositories.LocalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,6 +68,13 @@ public class LocalityController {
         }
         localityRepository.deleteById(id);
         return new ResponseEntity<>("Locality  Deleted, id: " + id, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/localities/rating")
+    public ResponseEntity<Object> getLocalitiesRating() {
+        List<Locality> result = localityRepository.findAllByOrderByClicksDesc();
+        return ResponseEntity.ok(result);
     }
 
 }
