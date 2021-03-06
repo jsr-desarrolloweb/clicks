@@ -38,6 +38,11 @@ public class PlayerController {
     @Autowired
     private ImageService imageService;
 
+    @GetMapping(value = "/greetting")
+    public ResponseEntity<Object> greeting(){
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestParam("name") String name,
