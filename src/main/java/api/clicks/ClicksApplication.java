@@ -28,13 +28,12 @@ public class ClicksApplication {
                     .addFilterAfter(new JWTAuthorizationFilter(getApplicationContext()), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers("/login/**").permitAll()
-                    .antMatchers("/logout").authenticated()
+                    .antMatchers("/logout/**").authenticated()
                     .antMatchers("/players/**").hasAnyRole("ADMIN", "GUEST")
                     .antMatchers("/player/**").hasRole("ADMIN")
-                    .antMatchers("/teams/**").hasRole("ADMIN")
+                    .antMatchers("/teams/**").hasAnyRole("ADMIN", "GUEST")
                     .antMatchers("/team/**").hasAnyRole("ADMIN", "GUEST")
                     .antMatchers("/").permitAll();
-//LazyInitializationException
         }
 
         @Bean

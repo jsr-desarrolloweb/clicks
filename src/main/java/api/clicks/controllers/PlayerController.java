@@ -209,6 +209,12 @@ public class PlayerController {
 
     }
 
+    @GetMapping(value = "/players/rating")
+    public ResponseEntity<Object> getPlayersRating(){
+        List<Player> result = playerRepository.findAllByOrderByClicksDesc();
+        return ResponseEntity.ok(result);
+    }
+
 
 
 
